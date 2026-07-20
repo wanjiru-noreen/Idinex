@@ -1,0 +1,63 @@
+/* =========================================================
+   IDINEX — Design Tokens
+   Theme: "workshop for ideas" — ink surfaces, a single warm
+   spark accent for anything that means action or life.
+   ========================================================= */
+
+:root {
+  /* ---- Color: ink surfaces ---- */
+  --ink-900: #10131A;   /* page background */
+  --ink-800: #191E28;   /* raised surface / cards */
+  --ink-700: #232936;   /* borders, dividers */
+  --ink-600: #333B4A;   /* hover borders */
+
+  /* ---- Color: text ---- */
+  --paper: #F1EEE6;         /* primary text on ink */
+  --paper-dim: #A7ACB8;     /* secondary text on ink */
+  --paper-faint: #6E7480;   /* tertiary / disabled */
+
+  /* ---- Color: accent ("spark") ---- */
+  --spark: #E7A33E;      /* primary accent — amber */
+  --spark-strong: #F0B860;
+  --ember: #C7501F;      /* secondary accent — warm red-orange */
+
+  /* ---- Color: status ---- */
+  --status-online: #6FBF8B;
+  --status-offline: #D9695C;
+  --status-pending: #E7A33E;
+
+  /* ---- Type families ---- */
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  /* ---- Type scale ---- */
+  --fs-eyebrow: 0.75rem;
+  --fs-body: 1rem;
+  --fs-lead: 1.25rem;
+  --fs-h3: 1.5rem;
+  --fs-h2: 2.25rem;
+  --fs-h1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* ---- Layout ---- */
+  --container-max: 72rem;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-med: 320ms;
+}

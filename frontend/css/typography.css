@@ -1,0 +1,55 @@
+/* =========================================================
+   IDINEX — Typography
+   ========================================================= */
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 0;
+  color: var(--paper);
+}
+
+h1 {
+  font-size: var(--fs-h1);
+  font-weight: 500;
+}
+
+h2 {
+  font-size: var(--fs-h2);
+}
+
+h3 {
+  font-size: var(--fs-h3);
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+  color: var(--paper-dim);
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  color: var(--paper-dim);
+  max-width: 38ch;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-eyebrow);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--spark);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.text-muted {
+  color: var(--paper-faint);
+}

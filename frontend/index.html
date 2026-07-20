@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idinex — where ideas find their next move</title>
+  <meta name="description" content="Idinex is a workshop for ideas: share one, request access to someone else's, and talk it through before you build." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/utilities.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+
+  <style>
+    /* Signature element: a fanned stack of idea-cards — the app's
+       core object made physical. Scoped here since it's unique
+       to the hero, not reused elsewhere yet. */
+    .card-stack {
+      position: relative;
+      height: 380px;
+    }
+    .card-stack__card {
+      position: absolute;
+      inset: 0;
+      width: 260px;
+      margin: auto;
+      padding: var(--space-6);
+      background: var(--ink-800);
+      border: 1px solid var(--ink-700);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 24px 48px -24px rgba(0, 0, 0, 0.6);
+      transition: transform var(--duration-med) var(--ease-out);
+    }
+    .card-stack:hover .card-stack__card {
+      transform: var(--hover-transform, none) translateY(-6px);
+    }
+    .card-stack__card:nth-child(1) { transform: rotate(-8deg) translateX(-70px); z-index: 1; }
+    .card-stack__card:nth-child(2) { transform: rotate(3deg) translateX(0px); z-index: 2; }
+    .card-stack__card:nth-child(3) { transform: rotate(12deg) translateX(70px); z-index: 1; }
+    .card-stack:hover .card-stack__card:nth-child(1) { transform: rotate(-4deg) translateX(-90px) translateY(-6px); }
+    .card-stack:hover .card-stack__card:nth-child(2) { transform: rotate(0deg) translateX(0px) translateY(-10px); }
+    .card-stack:hover .card-stack__card:nth-child(3) { transform: rotate(4deg) translateX(90px) translateY(-6px); }
+
+    .card-stack__tag {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--spark);
+      border: 1px solid var(--ink-600);
+      border-radius: 999px;
+      padding: 2px var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+    .card-stack__title {
+      font-family: var(--font-display);
+      font-size: 1.0625rem;
+      color: var(--paper);
+      margin-bottom: var(--space-2);
+    }
+    .card-stack__meta {
+      font-size: 0.8125rem;
+      color: var(--paper-faint);
+    }
+
+    .step {
+      display: flex;
+      gap: var(--space-4);
+      align-items: flex-start;
+    }
+    .step__index {
+      font-family: var(--font-mono);
+      color: var(--spark);
+      font-size: 0.875rem;
+      padding-top: 4px;
+    }
+
+    .dev-banner {
+      background: var(--ink-800);
+      border-bottom: 1px solid var(--ink-700);
+      text-align: center;
+      padding: var(--space-2);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--paper-faint);
+    }
+    .dev-banner strong {
+      color: var(--spark);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dev-banner">
+    <strong>Idinex</strong> is now in development — <span data-status-badge class="mono">checking backend…</span>
+  </div>
+
+  <div data-include="components/navbar.html"></div>
+
+  <main>
+    <section class="container hero">
+      <div class="stack">
+        <span class="eyebrow">A workshop for ideas</span>
+        <h1>Where ideas find<br />their next move.</h1>
+        <p class="lead">
+          Post the idea you're not ready to build alone. Request access to
+          someone else's. Talk it through in the open before either of you
+          commits.
+        </p>
+        <div class="cluster" style="margin-top: var(--space-4);">
+          <a href="pages/register.html" class="btn btn--primary">Share an idea</a>
+          <a href="pages/ideas.html" class="btn btn--ghost">Browse ideas</a>
+        </div>
+      </div>
+
+      <div class="card-stack" aria-hidden="true">
+        <div class="card-stack__card">
+          <span class="card-stack__tag">early access</span>
+          <div class="card-stack__title">Offline-first grocery list</div>
+          <div class="card-stack__meta">3 requests · opened 2d ago</div>
+        </div>
+        <div class="card-stack__card">
+          <span class="card-stack__tag">seeking co-builder</span>
+          <div class="card-stack__title">Local repair-cafe finder</div>
+          <div class="card-stack__meta">11 requests · opened 5d ago</div>
+        </div>
+        <div class="card-stack__card">
+          <span class="card-stack__tag">open discussion</span>
+          <div class="card-stack__title">Shared studio scheduling</div>
+          <div class="card-stack__meta">6 requests · opened 1w ago</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider container" />
+
+    <section class="container section--tight">
+      <span class="eyebrow">How it works</span>
+      <div class="grid-3 mt-8">
+        <div class="step">
+          <span class="step__index">01</span>
+          <div>
+            <h3>Share</h3>
+            <p>Post the idea with as much or as little detail as you're comfortable with.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__index">02</span>
+          <div>
+            <h3>Request access</h3>
+            <p>Interested people ask to see the full idea. You decide who gets in.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step__index">03</span>
+          <div>
+            <h3>Discuss</h3>
+            <p>Work out fit and direction in messages before anyone commits to building.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div data-include="components/footer.html"></div>
+
+  <script type="module">
+    import { initIncludes } from "./js/components/include-loader.js";
+    import { initStatusBadges } from "./js/components/status-badge.js";
+
+    initIncludes().then(initStatusBadges);
+  </script>
+</body>
+</html>
