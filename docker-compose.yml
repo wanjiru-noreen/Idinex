@@ -1,17 +1,55 @@
-# This should reference the dockerfiles on the deployments folder
-# Starts Backend, Frontend, and PostgreSQL in One command: docker compose up
 services:
+  postgres:
+    build:
+      context: .
+      dockerfile: deployments/docker/postgres.Dockerfile
+    image: idinex-postgres:dev
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-idinex}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-idinex}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   backend:
     build:
       context: .
       dockerfile: deployments/docker/backend.Dockerfile
+    image: idinex-backend:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: ${PORT:-8080}
+      DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/idinex?sslmode=disable}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      APP_ENV: ${APP_ENV:-development}
+      SMTP_HOST: ${SMTP_HOST:-localhost}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    restart: unless-stopped
 
   frontend:
     build:
       context: .
       dockerfile: deployments/docker/frontend.Dockerfile
+    image: idinex-frontend:dev
+    depends_on:
+      - backend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    restart: unless-stopped
 
-  postgres:
-    build:
-      context: .
-      dockerfile: deployments/docker/postgres.Dockerfile
+volumes:
+  postgres_data:

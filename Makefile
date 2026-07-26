@@ -1,46 +1,84 @@
-# for automated tasks
-help        # Show available commands
+DOCKER_COMPOSE := $(shell if command -v docker-compose >/dev/null 2>&1; then echo docker-compose; elif docker compose version >/dev/null 2>&1; then echo "docker compose"; else echo "docker compose"; fi)
 
-setup       # First-time project setup
+.PHONY: help setup dev stop restart build test lint fmt migrate rollback seed reset-db clean logs backend frontend db docker-build docker-push deploy backup restore
 
-dev         # Start development environment
+help:
+	@echo "Available commands:"
+	@printf '%-15s %s\n' 'setup' 'First-time project setup'
+	@printf '%-15s %s\n' 'dev' 'Start the full development stack'
+	@printf '%-15s %s\n' 'test' 'Run the backend test suite'
+	@printf '%-15s %s\n' 'stop' 'Stop the development environment'
+	@printf '%-15s %s\n' 'restart' 'Restart the development environment'
+	@printf '%-15s %s\n' 'logs' 'Follow application logs'
+	@printf '%-15s %s\n' 'backend' 'Start the backend service only'
+	@printf '%-15s %s\n' 'frontend' 'Start the frontend service only'
+	@printf '%-15s %s\n' 'db' 'Start PostgreSQL only'
 
-stop        # Stop containers
+setup:
+	@if [ ! -f .env ]; then cp .env.example .env; fi
+	@$(DOCKER_COMPOSE) build
+	@$(DOCKER_COMPOSE) up -d postgres
+	@echo "Development environment is ready. Run 'make dev' to start the stack."
 
-restart     # Restart development environment
+dev:
+	$(DOCKER_COMPOSE) up --build
 
-build       # Build backend and frontend
+stop:
+	$(DOCKER_COMPOSE) down
 
-test        # Run all tests
+restart: stop dev
 
-lint        # Run linters
+build: docker-build
 
-fmt         # Format source code
+test:
+	@cd backend && go test ./...
 
-migrate     # Apply database migrations
+lint:
+	@cd backend && gofmt -w ./... && git diff --exit-code
 
-rollback    # Roll back last migration
+fmt:
+	@cd backend && gofmt -w ./...
 
-seed        # Seed development database
+migrate:
+	@echo "Database migrations are not configured yet; the init SQL script bootstraps the local database."
 
-reset-db    # Drop, recreate and seed database
+rollback:
+	@echo "No rollback workflow is configured yet."
 
-clean       # Remove temporary files and caches
+seed:
+	@echo "The PostgreSQL container bootstraps the development database automatically."
 
-logs        # Follow application logs
+reset-db:
+	$(DOCKER_COMPOSE) down -v
+	$(DOCKER_COMPOSE) up -d postgres
 
-backend     # Start backend only
+clean:
+	$(DOCKER_COMPOSE) down -v
+	docker system prune -f
 
-frontend    # Start frontend only
+logs:
+	$(DOCKER_COMPOSE) logs -f
 
-db          # Start PostgreSQL only
+backend:
+	$(DOCKER_COMPOSE) up --build backend
 
-docker-build    # Build Docker images
+frontend:
+	$(DOCKER_COMPOSE) up --build frontend
 
-docker-push     # Push Docker images
+db:
+	$(DOCKER_COMPOSE) up -d postgres
 
-deploy      # Deploy application
+docker-build:
+	$(DOCKER_COMPOSE) build
 
-backup      # Backup database
+docker-push:
+	@echo "Docker push is not configured for local development."
 
-restore     # Restore database
+deploy:
+	@echo "Deployment targets are not configured yet."
+
+backup:
+	$(DOCKER_COMPOSE) exec -T postgres pg_dump -U $${POSTGRES_USER:-postgres} $${POSTGRES_DB:-idinex} > backup.sql
+
+restore:
+	$(DOCKER_COMPOSE) exec -T postgres psql -U $${POSTGRES_USER:-postgres} -d $${POSTGRES_DB:-idinex} < backup.sql
