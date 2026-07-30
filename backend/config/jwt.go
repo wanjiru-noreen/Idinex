@@ -1,4 +1,4 @@
-/* 
+/*
 JWT configuration.
 
 Expiration time.

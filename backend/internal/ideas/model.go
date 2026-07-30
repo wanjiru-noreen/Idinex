@@ -1,7 +1,7 @@
 /*
 Idea
 
-Category
+# Category
 
 Visibility
 */
