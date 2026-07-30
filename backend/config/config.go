@@ -1,13 +1,10 @@
 package config
 
 import (
-	"context"
-	"database/sql"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	_ "github.com/lib/pq"
 	"github.com/joho/godotenv"
@@ -70,28 +67,4 @@ func (c *Config) HTTPAddress() string {
 	return fmt.Sprintf(":%s", c.Port)
 }
 
-// WaitForDatabase waits until the PostgreSQL database is reachable or the timeout expires.
-func (c *Config) WaitForDatabase(timeout time.Duration) error {
-	ctx, cancel := context.WithTimeout(context.Background(), timeout)
-	defer cancel()
 
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-
-	for {
-		db, err := sql.Open("postgres", c.DatabaseURL)
-		if err == nil {
-			if pingErr := db.PingContext(ctx); pingErr == nil {
-				_ = db.Close()
-				return nil
-			}
-			_ = db.Close()
-		}
-
-		select {
-		case <-ctx.Done():
-			return fmt.Errorf("timed out waiting for database: %w", ctx.Err())
-		case <-ticker.C:
-		}
-	}
-}
