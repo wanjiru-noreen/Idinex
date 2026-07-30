@@ -1,9 +1,11 @@
 package main
 
 import (
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
 	"idinex-go/config"
 	"idinex-go/internal/database"
@@ -11,36 +13,47 @@ import (
 )
 
 func main() {
-	// Load application configuration from the .env file.
+	// Load application configuration.
 	cfg, err := config.Load()
-
-	// Stop the application if configuration fails to load.
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Connect to the PostgreSQL database.
+	// Wait for the database to become available.
+	if err := cfg.WaitForDatabase(30 * time.Second); err != nil {
+		log.Printf("database connection unavailable: %v", err)
+		os.Exit(1)
+	}
+
+	// Connect to PostgreSQL.
 	db, err := database.Connect(cfg.DatabaseURL)
-
-	// Stop the application if the database connection fails.
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// Close the database connection when the application exits.
 	defer db.Close()
 
-	// Create and register all application routes.
+	// Create application router.
 	appRouter := router.New()
 
-	// Display the port the server is running on.
-	fmt.Println("Server running on port", cfg.Port)
+	// Health endpoint.
+	appRouter.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(map[string]string{
+			"status":      "ok",
+			"service":     "backend",
+			"environment": cfg.Environment,
+		})
+	})
 
-	// Start the HTTP server.
-	err = http.ListenAndServe(":"+cfg.Port, appRouter)
+	// Root endpoint (only if router.New() doesn't already register one).
+	appRouter.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("Idinex backend is running"))
+	})
 
-	// Stop the application if the server fails to start.
-	if err != nil {
+	address := cfg.HTTPAddress()
+	log.Printf("starting backend on %s", address)
+
+	if err := http.ListenAndServe(address, appRouter); err != nil {
 		log.Fatal(err)
 	}
 }
