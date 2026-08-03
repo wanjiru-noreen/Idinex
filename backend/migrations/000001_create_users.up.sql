@@ -23,4 +23,17 @@ CREATE TABLE IF NOT EXISTS users (
         CHECK (char_length(password_hash) > 0)
 );
 
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER users_updated_at_trigger
+BEFORE UPDATE ON users
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+
 COMMENT ON TABLE users IS 'Application users';
