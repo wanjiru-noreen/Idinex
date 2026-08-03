@@ -53,3 +53,56 @@ Set up a repeatable development environment so a new contributor can start the f
 - Ran `make help` to verify the new developer commands were exposed correctly.
 - Parsed the Compose YAML successfully to confirm the stack definition is syntactically valid.s
 
+## Day 2 - Database Migration Setup and Users Schema
+
+**Date:** 2026-08-03  
+**Author:** [Bramwel](https://github.com/dev-bramwel)  
+**Branch:** feat/database_schema
+
+### Goal
+Implement the initial database migration system, design the `users` table schema, and establish a maintainable workflow for future database changes.
+
+### Implementation
+- Adopted **golang-migrate** as the project's migration tool for version-controlled database schema management.
+- Created the initial migration files:
+  - `backend/migrations/000001_create_users.up.sql`
+  - `backend/migrations/000001_create_users.down.sql`
+- Designed the `users` table using **UUID** primary keys generated with `uuid_generate_v4()`.
+- Added database constraints:
+  - Primary key on `id`
+  - Unique constraints on `username` and `email`
+  - `NOT NULL` constraints for required fields
+  - Validation checks for username length, non-empty email, and password hash.
+- Added a PostgreSQL comment to document the `users` table.
+- Implemented automatic maintenance of the `updated_at` column using a reusable PostgreSQL trigger function and trigger.
+- Configured Docker Compose to include a dedicated `golang-migrate` service for running database migrations.
+- Updated the root `Makefile` to support `make migrate` and `make rollback`.
+- Centralized environment configuration by using `.env` and `.env.example` as the single source of truth for project configuration.
+- Simplified `docker-compose.yml` to consume configuration from `.env` instead of duplicating default values.
+
+### Design Decisions
+- Selected **golang-migrate** as the project's migration framework to support versioned schema changes and reliable rollbacks.
+- Chose **UUID** primary keys over auto-incrementing integers for better scalability and reduced identifier predictability.
+- Used PostgreSQL **unique constraints** on `username` and `email`, which automatically create unique indexes without requiring separate `CREATE INDEX` statements.
+- Implemented automatic updates to the `updated_at` column using a PostgreSQL trigger so timestamps remain accurate regardless of how records are modified.
+- Centralized configuration in `.env` and `.env.example` to reduce duplication between Docker Compose, the backend, and migration tooling.
+
+### Verification
+- Verified Docker Compose successfully starts the PostgreSQL service.
+- Verified the migration container can access the mounted migration files.
+- Successfully executed the initial migration:
+
+  ```bash
+  docker compose run --rm migrate \
+    -path=/migrations \
+    -database "postgres://postgres:postgres@postgres:5432/idinex?sslmode=disable" \
+    up
+  ```
+
+- Verified the `users` table migration executes successfully.
+- Verified the migration tooling is integrated with Docker Compose.
+- Pending:
+  - Verify `make migrate`
+  - Verify `make rollback`
+  - Complete `docs/database.md`
+
