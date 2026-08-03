@@ -1,5 +1,14 @@
 DOCKER_COMPOSE := $(shell if command -v docker-compose >/dev/null 2>&1; then echo docker-compose; elif docker compose version >/dev/null 2>&1; then echo "docker compose"; else echo "docker compose"; fi)
 
+MIGRATE_IMAGE := migrate/migrate:v4.18.3
+
+DOCKER_NETWORK := $(shell $(DOCKER_COMPOSE) ps -q postgres | xargs docker inspect -f '{{range $$k,$$v := .NetworkSettings.Networks}}{{$$k}}{{end}}')
+
+ifneq (,$(wildcard .env))
+	include .env
+	export
+endif
+
 .PHONY: help setup dev stop restart build test lint fmt migrate rollback seed reset-db clean logs backend frontend db docker-build docker-push deploy backup restore
 
 help:
@@ -39,11 +48,17 @@ lint:
 fmt:
 	@cd backend && gofmt -w ./...
 
-migrate:
-	@echo "Database migrations are not configured yet; the init SQL script bootstraps the local database."
+migrate: db
+	$(DOCKER_COMPOSE) run --rm migrate \
+		-path=/migrations \
+		-database "$(DATABASE_URL)" \
+		up
 
-rollback:
-	@echo "No rollback workflow is configured yet."
+rollback: db
+	$(DOCKER_COMPOSE) run --rm migrate \
+		-path=/migrations \
+		-database "$(DATABASE_URL)" \
+		down 1
 
 seed:
 	@echo "The PostgreSQL container bootstraps the development database automatically."

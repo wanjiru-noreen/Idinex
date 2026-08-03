@@ -5,15 +5,15 @@ services:
       dockerfile: deployments/docker/postgres.Dockerfile
     image: idinex-postgres:dev
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-idinex}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+      - "${POSTGRES_PORT}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-idinex}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -28,16 +28,16 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      PORT: ${PORT:-8080}
-      DATABASE_URL: ${DATABASE_URL:-postgres://postgres:postgres@postgres:5432/idinex?sslmode=disable}
-      JWT_SECRET: ${JWT_SECRET:-dev-secret}
-      APP_ENV: ${APP_ENV:-development}
-      SMTP_HOST: ${SMTP_HOST:-localhost}
-      SMTP_PORT: ${SMTP_PORT:-1025}
-      SMTP_USER: ${SMTP_USER:-}
-      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      PORT: ${PORT}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      APP_ENV: ${APP_ENV}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
     ports:
-      - "${BACKEND_PORT:-8080}:8080"
+       - "${BACKEND_PORT}:8080"
     restart: unless-stopped
 
   frontend:
@@ -48,8 +48,19 @@ services:
     depends_on:
       - backend
     ports:
-      - "${FRONTEND_PORT:-3000}:80"
+     - "${FRONTEND_PORT}:80"
     restart: unless-stopped
+
+  migrate:
+    image: migrate/migrate:v4.18.3
+    profiles:
+      - tools
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/migrations:/migrations
+    entrypoint: ["migrate"]
 
 volumes:
   postgres_data:
