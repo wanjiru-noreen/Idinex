@@ -40,13 +40,17 @@ restart: stop dev
 build: docker-build
 
 test:
-	@cd backend && go test ./...
+	cd backend && go test ./...
 
 lint:
-	@cd backend && gofmt -w ./... && git diff --exit-code
+	cd backend && golangci-lint run
 
 fmt:
-	@cd backend && gofmt -w ./...
+	cd backend && go fmt ./...
+
+format-check:
+	cd backend && find . -name "*.go" -print0 | xargs -0 gofmt -w
+	cd backend && git diff --exit-code
 
 migrate: db
 	$(DOCKER_COMPOSE) run --rm migrate \

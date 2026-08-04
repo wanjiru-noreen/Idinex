@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  release:
+    types:
+      - published
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build backend image
+        run: |
+          docker build \
+            -f deployments/docker/backend.Dockerfile \
+            -t ghcr.io/${{ github.repository }}/backend:${{ github.ref_name }} \
+            .
+
+      - name: Push backend image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/backend:${{ github.ref_name }}
+
+      - name: Build frontend image
+        run: |
+          docker build \
+            -f deployments/docker/frontend.Dockerfile \
+            -t ghcr.io/${{ github.repository }}/frontend:${{ github.ref_name }} \
+            .
+
+      - name: Push frontend image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/frontend:${{ github.ref_name }}
+
+      - name: Build postgres image
+        run: |
+          docker build \
+            -f deployments/docker/postgres.Dockerfile \
+            -t ghcr.io/${{ github.repository }}/postgres:${{ github.ref_name }} \
+            .
+
+      - name: Push postgres image
+        run: |
+          docker push ghcr.io/${{ github.repository }}/postgres:${{ github.ref_name }}

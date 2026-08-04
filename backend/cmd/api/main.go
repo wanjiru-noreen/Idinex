@@ -8,8 +8,8 @@ import (
 
 	"idinex-go/config"
 	"idinex-go/internal/database"
-	"idinex-go/internal/router"
 	"idinex-go/internal/middleware"
+	"idinex-go/internal/router"
 )
 
 func main() {

@@ -4,23 +4,53 @@ on:
   push:
     branches:
       - main
+      - development
+      - feature/**
+      - feat/**
+      - fix/**
   pull_request:
 
 jobs:
-  backend-test:
+  backend:
+    name: Backend Checks
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend
+
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.22.2'
-      - name: Run backend tests
-        working-directory: backend
+          go-version-file: backend/go.mod
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Format check
+        run: |
+          files=$(gofmt -l .)
+          if [ -n "$files" ]; then
+            echo "Files need formatting:"
+            echo "$files"
+            exit 1
+          fi
+
+      - name: Run tests
         run: go test ./...
 
-  compose-config:
+      - name: Build
+        run: go build ./...
+
+  docker:
+    name: Docker Build
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-      - name: Validate Docker Compose file
-        run: docker compose config >/dev/null
+
+      - name: Build Compose images
+        run: docker compose build
