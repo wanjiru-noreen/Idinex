@@ -106,3 +106,52 @@ Implement the initial database migration system, design the `users` table schema
   - Verify `make rollback`
   - Complete `docs/database.md`
 
+## Day 3 - Docker Development Environment and Backend Integration
+
+**Date:** 2026-08-04  
+**Author:** [Bramwel](https://github.com/dev-bramwel)
+**Branch:** feat/databse_schema
+
+### Goal
+Establish a one-command local development environment using Docker Compose, verify PostgreSQL connectivity and migrations, resolve backend startup issues, and restore communication between the frontend and backend.
+
+### Implementation
+- Centralized development configuration into shared `.env` and `.env.example` files to provide a single source of truth for Docker Compose and the backend application.
+- Updated `docker-compose.yml` to consume environment variables directly instead of hardcoded defaults.
+- Configured the migration service to use the shared `DATABASE_URL` environment variable and verified database migrations execute correctly through Docker.
+- Fixed the backend Docker image by upgrading the Go base image to satisfy module requirements (`golang.org/x/crypto` requiring Go 1.25+).
+- Simplified `cmd/api/main.go` by removing duplicate route registrations and delegating HTTP route configuration to the router package.
+- Resolved duplicate `/health` endpoint registration that caused the backend to panic during startup.
+- Implemented a CORS middleware to allow requests from the frontend (`http://localhost:3000`) during development.
+- Wrapped the application router with the CORS middleware before starting the HTTP server.
+- Verified that the frontend status badge can successfully communicate with the backend health endpoint after CORS headers were added.
+
+### Verification
+- Ran database migrations using:
+  ```bash
+  make migrate
+  ```
+- Verified migration status:
+  ```bash
+  docker compose run --rm migrate version
+  ```
+- Started the complete development environment:
+  ```bash
+  make dev
+  ```
+- Confirmed PostgreSQL becomes healthy before the backend starts.
+- Confirmed backend successfully connects to PostgreSQL on startup.
+- Verified the backend health endpoint:
+  ```bash
+  curl http://localhost:8080/health
+  ```
+- Used the browser developer tools to diagnose the frontend connectivity issue.
+- Identified the missing `Access-Control-Allow-Origin` response header as the cause of the failed health check.
+- Confirmed the frontend status badge reports the backend as connected after enabling CORS.
+
+### Decisions
+- Adopted a shared `.env` and `.env.example` for all local development configuration.
+- Chose Docker Compose as the primary development environment so contributors can start all required services with a single `make dev` command.
+- Kept HTTP route registration centralized inside the router package to avoid duplicate endpoint definitions.
+- Implemented a lightweight custom CORS middleware using Go's standard library instead of introducing an external dependency.
+- Restricted CORS to the frontend development origin (`http://localhost:3000`) with the intention of making it environment-specific for future production deployments.
