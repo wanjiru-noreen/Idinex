@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"os"
@@ -10,6 +9,7 @@ import (
 	"idinex-go/config"
 	"idinex-go/internal/database"
 	"idinex-go/internal/router"
+	"idinex-go/internal/middleware"
 )
 
 func main() {
@@ -32,28 +32,19 @@ func main() {
 	}
 	defer db.Close()
 
-	// Create application router.
+	// TODO: Pass db into your handlers/services once they are implemented.
+	_ = db
+
+	// Create the application router.
 	appRouter := router.New()
 
-	// Health endpoint.
-	appRouter.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]string{
-			"status":      "ok",
-			"service":     "backend",
-			"environment": cfg.Environment,
-		})
-	})
+	handler := middleware.CORS(appRouter)
 
-	// Root endpoint (only if router.New() doesn't already register one).
-	appRouter.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("Idinex backend is running"))
-	})
-
+	// Start the HTTP server.
 	address := cfg.HTTPAddress()
 	log.Printf("starting backend on %s", address)
 
-	if err := http.ListenAndServe(address, appRouter); err != nil {
+	if err := http.ListenAndServe(address, handler); err != nil {
 		log.Fatal(err)
 	}
 }

@@ -18,14 +18,13 @@ func New() *http.ServeMux {
 
 	// Register the health check endpoint.
 	router.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		// Set the response type to JSON.
-		w.Header().Set("Content-Type", "application/json")
+    w.Header().Set("Content-Type", "application/json")
 
-		// Return the application's health status.
-		json.NewEncoder(w).Encode(map[string]string{
-			"status": "ok",
-		})
-	})
+    _ = json.NewEncoder(w).Encode(map[string]string{
+        "status":      "ok",
+        "service":     "backend",
+    })
+})
 
 	// Return the configured router.
 	return router
