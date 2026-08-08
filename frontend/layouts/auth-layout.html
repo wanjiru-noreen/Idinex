@@ -1,26 +1,37 @@
 <!--
   IDINEX — Auth layout (reference shell)
   Centered, minimal chrome — no navbar links, just the brand mark.
-  Copy this pattern for login.html / register.html / forgot-password.html.
+  Used by login.html / register.html / forgot-password.html.
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Idinex</title>
+  <title>Idinex — Authentication</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="../css/variables.css" />
   <link rel="stylesheet" href="../css/base.css" />
   <link rel="stylesheet" href="../css/typography.css" />
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
   <link rel="stylesheet" href="../css/auth.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
 </head>
 <body>
-  <main class="container section text-center" style="max-width: 28rem;">
-    <a href="../index.html" class="navbar__brand" style="justify-content:center;"><span class="navbar__brand-mark">◆</span>Idinex</a>
-    <!-- Page-specific form goes here -->
-  </main>
+  <div class="auth-page grid-blueprint">
+    <div class="auth-container">
+      <a href="../index.html" class="auth-brand">
+        <span class="auth-brand__mark">◆</span> IDINEX
+      </a>
+      <div class="auth-card">
+        <!-- Page-specific form goes here -->
+      </div>
+    </div>
+  </div>
 </body>
 </html>

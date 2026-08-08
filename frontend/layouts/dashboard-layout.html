@@ -8,27 +8,41 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Idinex</title>
+  <title>Dashboard — Idinex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
   <link rel="stylesheet" href="../css/variables.css" />
   <link rel="stylesheet" href="../css/base.css" />
   <link rel="stylesheet" href="../css/typography.css" />
   <link rel="stylesheet" href="../css/layout.css" />
   <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
   <link rel="stylesheet" href="../css/navbar.css" />
   <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/utilities.css" />
   <link rel="stylesheet" href="../css/responsive.css" />
 </head>
 <body>
   <div data-include="../components/navbar.html"></div>
-  <div class="container cluster" style="align-items:flex-start; gap: var(--space-8);">
-    <div data-include="../components/sidebar.html"></div>
-    <main style="flex:1;">
-      <!-- Page-specific content goes here -->
-    </main>
-  </div>
+
+  <main class="container dashboard-wrapper">
+    <div class="dashboard-layout">
+      <div data-include="../components/sidebar.html"></div>
+      <div class="dashboard-main">
+        <!-- Page-specific content goes here -->
+      </div>
+    </div>
+  </main>
+
   <script type="module">
     import { initIncludes } from "../js/components/include-loader.js";
-    initIncludes();
+    import { initAuthUI } from "../js/auth/auth.js";
+
+    initIncludes().then(() => {
+      initAuthUI();
+    });
   </script>
 </body>
 </html>
