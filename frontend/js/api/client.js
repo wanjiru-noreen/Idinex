@@ -19,9 +19,12 @@ async function request(path, options = {}) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), config.REQUEST_TIMEOUT_MS);
 
+  const token = localStorage.getItem("idinex_auth_token") || sessionStorage.getItem("idinex_auth_token");
+  const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
+
   try {
     const response = await fetch(`${config.API_BASE_URL}${path}`, {
-      headers: { "Content-Type": "application/json", ...options.headers },
+      headers: { "Content-Type": "application/json", ...authHeader, ...options.headers },
       signal: controller.signal,
       ...options,
     });
