@@ -1,0 +1,32 @@
+/* ==========================================================================
+   forms.css
+   ========================================================================== */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.field label {
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--paper-500);
+}
+
+.field input,
+.field textarea {
+  background-color: var(--ink-800);
+  border: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  color: var(--paper-100);
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--signal-500);
+}

@@ -1,20 +1,17 @@
-/* =========================================================
-   IDINEX — Buttons
-   ========================================================= */
+/* ==========================================================================
+   buttons.css
+   ========================================================================== */
 
 .btn {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-sm);
-  border: 1px solid transparent;
-  font-size: 0.9375rem;
+  font-size: var(--text-sm);
   font-weight: 600;
-  transition: transform var(--duration-fast) var(--ease-out),
-    background var(--duration-fast) var(--ease-out),
-    border-color var(--duration-fast) var(--ease-out);
+  transition: background-color var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
 }
 
 .btn:active {
@@ -22,21 +19,20 @@
 }
 
 .btn--primary {
-  background: var(--spark);
+  background-color: var(--signal-500);
   color: var(--ink-900);
 }
 
 .btn--primary:hover {
-  background: var(--spark-strong);
+  background-color: var(--signal-600);
 }
 
 .btn--ghost {
-  background: transparent;
-  border-color: var(--ink-600);
-  color: var(--paper);
+  background-color: transparent;
+  border: var(--border-hairline);
+  color: var(--paper-100);
 }
 
 .btn--ghost:hover {
-  border-color: var(--spark);
-  color: var(--spark);
+  border-color: var(--paper-500);
 }

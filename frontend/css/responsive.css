@@ -1,36 +1,20 @@
-/* =========================================================
-   IDINEX — Responsive overrides
-   Loaded last: mobile-first adjustments to layout/type.
-   ========================================================= */
+/* ==========================================================================
+   responsive.css
+   Loaded LAST in the cascade. Only cross-cutting breakpoint overrides that
+   don't belong to one specific component live here.
+   ========================================================================== */
 
-@media (max-width: 960px) {
-  .hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding-block: var(--space-16);
-    gap: var(--space-8);
-  }
-
-  .grid-3 {
-    grid-template-columns: 1fr;
-    gap: var(--space-6);
-  }
-
-  .card-stack {
-    margin-inline: auto;
+@media (max-width: 768px) {
+  .status-banner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
   }
 }
 
-@media (max-width: 600px) {
-  .container {
-    padding-inline: var(--space-4);
-  }
-
-  .section {
-    padding-block: var(--space-16);
-  }
-
-  h1 {
-    letter-spacing: -0.005em;
+@media (max-width: 480px) {
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

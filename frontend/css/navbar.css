@@ -1,50 +1,46 @@
-/* =========================================================
-   IDINEX — Navbar
-   ========================================================= */
+/* ==========================================================================
+   navbar.css
+   ========================================================================== */
 
 .navbar {
   position: sticky;
   top: 0;
   z-index: 50;
+  background-color: rgba(14, 20, 32, 0.85);
+  backdrop-filter: blur(8px);
+  border-bottom: var(--border-hairline);
+}
+
+.navbar__inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding-block: var(--space-4);
-  background: rgba(16, 19, 26, 0.85);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--ink-700);
 }
 
-.navbar__brand {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-2);
-  font-family: var(--font-display);
-  font-size: 1.25rem;
-  font-weight: 600;
+.navbar__mark {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.05em;
 }
 
-.navbar__brand-mark {
-  color: var(--spark);
+.navbar__mark span {
+  color: var(--signal-500);
 }
 
 .navbar__links {
   display: flex;
   align-items: center;
   gap: var(--space-8);
-}
-
-.navbar__links a {
-  font-size: 0.9375rem;
-  color: var(--paper-dim);
-  transition: color var(--duration-fast) var(--ease-out);
+  font-size: var(--text-sm);
+  color: var(--paper-300);
 }
 
 .navbar__links a:hover {
-  color: var(--paper);
+  color: var(--paper-100);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 640px) {
   .navbar__links {
     display: none;
   }

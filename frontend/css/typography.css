@@ -1,55 +1,41 @@
-/* =========================================================
-   IDINEX — Typography
-   ========================================================= */
+/* ==========================================================================
+   typography.css
+   ========================================================================== */
 
-h1,
-h2,
-h3 {
+h1, h2, h3 {
   font-family: var(--font-display);
   font-weight: 600;
-  line-height: 1.08;
   letter-spacing: -0.01em;
-  margin: 0;
-  color: var(--paper);
+  line-height: 1.1;
 }
 
-h1 {
-  font-size: var(--fs-h1);
-  font-weight: 500;
-}
-
-h2 {
-  font-size: var(--fs-h2);
-}
-
-h3 {
-  font-size: var(--fs-h3);
-  font-weight: 600;
-}
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-lg); }
 
 p {
-  margin: 0;
-  color: var(--paper-dim);
-}
-
-.lead {
-  font-size: var(--fs-lead);
-  color: var(--paper-dim);
-  max-width: 38ch;
+  font-size: var(--text-base);
+  color: var(--paper-300);
+  max-width: 60ch;
 }
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: var(--fs-eyebrow);
-  text-transform: uppercase;
+  font-size: var(--text-xs);
   letter-spacing: 0.14em;
-  color: var(--spark);
-}
-
-.mono {
-  font-family: var(--font-mono);
+  text-transform: uppercase;
+  color: var(--signal-500);
 }
 
 .text-muted {
-  color: var(--paper-faint);
+  color: var(--paper-500);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
 }
