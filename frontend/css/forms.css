@@ -7,6 +7,13 @@
   flex-direction: column;
   gap: var(--space-2);
   margin-bottom: var(--space-4);
+  text-align: left;
+}
+
+.field__label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .field label {
@@ -14,19 +21,192 @@
   font-family: var(--font-mono);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--paper-500);
+  color: var(--paper-300);
+  font-weight: 500;
+}
+
+.field label .required {
+  color: var(--signal-500);
+  margin-left: 2px;
+}
+
+.field__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .field input,
+.field select,
 .field textarea {
+  width: 100%;
   background-color: var(--ink-800);
   border: var(--border-hairline);
   border-radius: var(--radius-sm);
-  padding: var(--space-3);
+  padding: var(--space-3) var(--space-4);
   color: var(--paper-100);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  transition: border-color var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+  outline: none;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--paper-500);
+  font-size: var(--text-sm);
 }
 
 .field input:focus,
+.field select:focus,
 .field textarea:focus {
   border-color: var(--signal-500);
+  box-shadow: 0 0 0 3px rgba(232, 163, 61, 0.15);
+}
+
+.field--error input,
+.field--error select,
+.field--error textarea {
+  border-color: var(--status-offline);
+}
+
+.field--error input:focus {
+  box-shadow: 0 0 0 3px rgba(194, 89, 79, 0.2);
+}
+
+.field__error-text {
+  font-size: var(--text-xs);
+  color: var(--status-offline);
+  margin-top: 2px;
+  display: none;
+}
+
+.field--error .field__error-text {
+  display: block;
+}
+
+.field__hint {
+  font-size: var(--text-xs);
+  color: var(--paper-500);
+  margin-top: 2px;
+}
+
+/* Password Toggle Icon inside Input */
+.field__input-wrapper input {
+  padding-right: 2.75rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--paper-500);
+  cursor: pointer;
+  padding: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.password-toggle-btn:hover {
+  color: var(--paper-100);
+}
+
+.password-toggle-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Password strength indicator */
+.password-meter {
+  display: flex;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.password-meter__segment {
+  height: 3px;
+  flex: 1;
+  background-color: var(--ink-700);
+  border-radius: 2px;
+  transition: background-color var(--duration-fast) var(--ease-out);
+}
+
+.password-meter--weak .password-meter__segment:nth-child(1) { background-color: var(--status-offline); }
+.password-meter--medium .password-meter__segment:nth-child(1),
+.password-meter--medium .password-meter__segment:nth-child(2) { background-color: var(--signal-500); }
+.password-meter--strong .password-meter__segment:nth-child(1),
+.password-meter--strong .password-meter__segment:nth-child(2),
+.password-meter--strong .password-meter__segment:nth-child(3) { background-color: var(--status-online); }
+
+/* Checkbox field styling */
+.checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-field input[type="checkbox"] {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background-color: var(--ink-800);
+  border: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  position: relative;
+  display: grid;
+  place-content: center;
+  transition: background-color var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+  margin: 0;
+}
+
+.checkbox-field input[type="checkbox"]:checked {
+  background-color: var(--signal-500);
+  border-color: var(--signal-500);
+}
+
+.checkbox-field input[type="checkbox"]:checked::before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 2px solid var(--ink-900);
+  border-bottom: 2px solid var(--ink-900);
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+.checkbox-field label {
+  font-size: var(--text-sm);
+  color: var(--paper-300);
+  cursor: pointer;
+  margin: 0;
+  text-transform: none;
+  letter-spacing: normal;
+  font-family: var(--font-body);
+}
+
+.checkbox-field label a {
+  color: var(--signal-500);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.checkbox-field label a:hover {
+  color: var(--signal-600);
 }
