@@ -1,13 +1,13 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"idinex-go/config"
+	"idinex-go/internal/auth"
 	"idinex-go/internal/database"
 	"idinex-go/internal/router"
 )
@@ -32,23 +32,13 @@ func main() {
 	}
 	defer db.Close()
 
-	// Create application router.
+	// Create application router. It already registers the root and
+	// /health endpoints.
 	appRouter := router.New()
 
-	// Health endpoint.
-	appRouter.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(map[string]string{
-			"status":      "ok",
-			"service":     "backend",
-			"environment": cfg.Environment,
-		})
-	})
-
-	// Root endpoint (only if router.New() doesn't already register one).
-	appRouter.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("Idinex backend is running"))
-	})
+	// Register the authentication module.
+	authHandler := auth.NewHandler(auth.NewService(auth.NewRepository(db)))
+	auth.RegisterRoutes(appRouter, authHandler)
 
 	address := cfg.HTTPAddress()
 	log.Printf("starting backend on %s", address)
