@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	_ "github.com/lib/pq"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
 // Config contains the environment-driven settings used by the API.
@@ -66,5 +66,3 @@ func (c *Config) HTTPAddress() string {
 	}
 	return fmt.Sprintf(":%s", c.Port)
 }
-
-

@@ -11,7 +11,10 @@ func TestLoadUsesEnvironmentOverrides(t *testing.T) {
 	t.Setenv("APP_ENV", "test")
 	t.Setenv("SMTP_PORT", "2525")
 
-	cfg := Load()
+	cfg, err := Load()
+	if err != nil {
+		t.Fatalf("expected Load to succeed, got error: %v", err)
+	}
 
 	if cfg.Port != "9090" {
 		t.Fatalf("expected port override to be applied, got %q", cfg.Port)
