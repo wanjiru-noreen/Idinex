@@ -1,16 +1,16 @@
 package auth
 
-import ( 
-	"time"
+import "time"
 
-	"github.com/google/uuid"
-)
-
+// User represents a registered application user.
+// ID is stored as a string because the database generates the UUID
+// and lib/pq can scan it into a string safely.
 type User struct {
-	ID  uuid.UUID 'json:"id"'
-	Username string 'json:"username"'
-	Email  string 'json:"email"'
-	PassWordHash string 'json:"-"'
-	CreatedAt  time.Time 'json:"created_at"'
-	UpdatedAt time.Time 'json:"updated_at"'
+	ID           string
+	Name         string
+	Username     string
+	Email        string
+	PasswordHash string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
 }
