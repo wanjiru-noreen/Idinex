@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create your account — Idinex</title>
+  <meta name="description" content="Join Idinex to share ideas, request access to collaborative projects, and connect with builders." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/typography.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+  <div class="auth-page grid-blueprint">
+    <div class="auth-container">
+
+      <a href="../index.html" class="auth-brand" aria-label="Idinex Home">
+        <span class="auth-brand__mark">◆</span> IDINEX
+      </a>
+
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Create your account</h1>
+          <p>Join the Idinex workshop to post ideas, request collaboration, and talk through projects before you build.</p>
+        </div>
+
+        <div id="auth-alert" class="auth-alert hidden" role="alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="auth-alert-message"></span>
+        </div>
+
+        <div class="auth-social">
+          <button type="button" class="btn--social" id="btn-github-auth">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Continue with GitHub
+          </button>
+        </div>
+
+        <div class="auth-divider">
+          <span>or register with email</span>
+        </div>
+
+        <form id="register-form" novalidate>
+          <div class="field" id="field-name">
+            <label for="name">Full Name <span class="required">*</span></label>
+            <input type="text" id="name" name="name" placeholder="e.g. Bramwel Dev" required autocomplete="name" />
+            <span class="field__error-text">Please enter your full name.</span>
+          </div>
+
+          <div class="field" id="field-username">
+            <label for="username">Username <span class="required">*</span></label>
+            <input type="text" id="username" name="username" placeholder="e.g. dev-bramwel" required autocomplete="username" />
+            <span class="field__error-text">Username must be at least 3 characters long.</span>
+          </div>
+
+          <div class="field" id="field-email">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@domain.com" required autocomplete="email" />
+            <span class="field__error-text">Please enter a valid email address.</span>
+          </div>
+
+          <div class="field" id="field-password">
+            <label for="password">Password <span class="required">*</span></label>
+            <div class="field__input-wrapper">
+              <input type="password" id="password" name="password" placeholder="Min. 8 characters" required autocomplete="new-password" />
+              <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
+                <svg viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <div class="password-meter" id="password-meter">
+              <div class="password-meter__segment"></div>
+              <div class="password-meter__segment"></div>
+              <div class="password-meter__segment"></div>
+            </div>
+            <span class="field__error-text">Password must be at least 8 characters.</span>
+          </div>
+
+          <div class="field" id="field-confirm">
+            <label for="confirmPassword">Confirm Password <span class="required">*</span></label>
+            <div class="field__input-wrapper">
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" required autocomplete="new-password" />
+            </div>
+            <span class="field__error-text">Passwords do not match.</span>
+          </div>
+
+          <div class="checkbox-field">
+            <input type="checkbox" id="terms" name="terms" required />
+            <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full" id="btn-submit">
+            <span class="btn-text">Create Account</span>
+          </button>
+        </form>
+
+        <div class="auth-demo-prompt">
+          <span>Want to test quickly?</span>
+          <button type="button" class="btn-demo-fill" id="btn-fill-demo">Fill Demo Values</button>
+        </div>
+
+        <div class="auth-footer">
+          Already have an account? <a href="login.html">Log in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { register, isAuthenticated } from "../js/auth/auth.js";
+
+    // Auto redirect if already authenticated
+    if (isAuthenticated()) {
+      window.location.href = "dashboard.html";
+    }
+
+    const form = document.getElementById("register-form");
+    const alertBox = document.getElementById("auth-alert");
+    const alertMsg = document.getElementById("auth-alert-message");
+    const passwordInput = document.getElementById("password");
+    const togglePasswordBtn = document.getElementById("toggle-password");
+    const passwordMeter = document.getElementById("password-meter");
+    const fillDemoBtn = document.getElementById("btn-fill-demo");
+    const submitBtn = document.getElementById("btn-submit");
+
+    // Toggle Password Visibility
+    togglePasswordBtn.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+      togglePasswordBtn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+      togglePasswordBtn.innerHTML = isPassword
+        ? `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+        : `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    });
+
+    // Password Strength Meter
+    passwordInput.addEventListener("input", () => {
+      const val = passwordInput.value;
+      passwordMeter.className = "password-meter";
+      if (!val) return;
+      if (val.length < 6) {
+        passwordMeter.classList.add("password-meter--weak");
+      } else if (val.length < 10 || !/\d/.test(val)) {
+        passwordMeter.classList.add("password-meter--medium");
+      } else {
+        passwordMeter.classList.add("password-meter--strong");
+      }
+    });
+
+    // Fill Demo Data
+    fillDemoBtn.addEventListener("click", () => {
+      document.getElementById("name").value = "Bramwel Dev";
+      document.getElementById("username").value = "dev-bramwel";
+      document.getElementById("email").value = "bramwel@idinex.dev";
+      document.getElementById("password").value = "Secret123!";
+      document.getElementById("confirmPassword").value = "Secret123!";
+      document.getElementById("terms").checked = true;
+      passwordInput.dispatchEvent(new Event("input"));
+      hideAlert();
+    });
+
+    // Social Auth buttons feedback
+    document.getElementById("btn-github-auth").addEventListener("click", () => {
+      showAlert("GitHub OAuth is configured for production. Fill form below for instant access.", "info");
+    });
+
+    function showAlert(msg, type = "error") {
+      alertBox.className = `auth-alert auth-alert--${type}`;
+      alertMsg.textContent = msg;
+      alertBox.classList.remove("hidden");
+    }
+
+    function hideAlert() {
+      alertBox.classList.add("hidden");
+    }
+
+    function setError(fieldId, show) {
+      const el = document.getElementById(fieldId);
+      if (el) {
+        if (show) el.classList.add("field--error");
+        else el.classList.remove("field--error");
+      }
+    }
+
+    // Form submission handler
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const name = document.getElementById("name").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = passwordInput.value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+      const termsChecked = document.getElementById("terms").checked;
+
+      let valid = true;
+
+      if (!name) { setError("field-name", true); valid = false; } else { setError("field-name", false); }
+      if (!username || username.length < 3) { setError("field-username", true); valid = false; } else { setError("field-username", false); }
+      if (!email || !/\S+@\S+\.\S+/.test(email)) { setError("field-email", true); valid = false; } else { setError("field-email", false); }
+      if (!password || password.length < 8) { setError("field-password", true); valid = false; } else { setError("field-password", false); }
+      if (password !== confirmPassword) { setError("field-confirm", true); valid = false; } else { setError("field-confirm", false); }
+
+      if (!termsChecked) {
+        showAlert("Please accept the Terms of Service to create an account.");
+        return;
+      }
+
+      if (!valid) return;
+
+      submitBtn.classList.add("btn--loading");
+
+      try {
+        const result = await register({ name, username, email, password });
+        showAlert("Account created successfully! Redirecting to dashboard...", "success");
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 800);
+      } catch (err) {
+        submitBtn.classList.remove("btn--loading");
+        showAlert(err.message || "Registration failed. Please check your information.");
+      }
+    });
+  </script>
+</body>
+</html>

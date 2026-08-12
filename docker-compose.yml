@@ -1,17 +1,66 @@
-# This should reference the dockerfiles on the deployments folder
-# Starts Backend, Frontend, and PostgreSQL in One command: docker compose up
 services:
+  postgres:
+    build:
+      context: .
+      dockerfile: deployments/docker/postgres.Dockerfile
+    image: idinex-postgres:dev
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
   backend:
     build:
       context: .
       dockerfile: deployments/docker/backend.Dockerfile
+    image: idinex-backend:dev
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PORT: ${PORT}
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET: ${JWT_SECRET}
+      APP_ENV: ${APP_ENV}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+    ports:
+       - "${BACKEND_PORT}:8080"
+    restart: unless-stopped
 
   frontend:
     build:
       context: .
       dockerfile: deployments/docker/frontend.Dockerfile
+    image: idinex-frontend:dev
+    depends_on:
+      - backend
+    ports:
+     - "${FRONTEND_PORT}:80"
+    restart: unless-stopped
 
-  postgres:
-    build:
-      context: .
-      dockerfile: deployments/docker/postgres.Dockerfile
+  migrate:
+    image: migrate/migrate:v4.18.3
+    profiles:
+      - tools
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./backend/migrations:/migrations
+    entrypoint: ["migrate"]
+
+volumes:
+  postgres_data:

@@ -1,0 +1,59 @@
+/* ==========================================================================
+   variables.css
+   Design tokens for IDINEX.
+
+   Concept: "the ideas ledger" — a drafting-table blueprint crossed with a
+   lab notebook. Ideas get logged, indexed, and built. Ink-navy paper,
+   graphite rules, a single signal-amber accent for anything "live."
+   ========================================================================== */
+
+:root {
+  /* ---- Color: named tokens, not utility names ---- */
+  --ink-900: #0e1420;   /* primary background, deep drafting-table navy   */
+  --ink-800: #141c2b;   /* raised surfaces / cards                        */
+  --ink-700: #1d2739;   /* borders, hairlines on dark                     */
+  --paper-100: #f3efe4; /* primary text on dark, warm ledger paper        */
+  --paper-300: #cfc9ba; /* secondary text on dark                         */
+  --paper-500: #8d8779; /* muted text / captions                         */
+  --signal-500: #e8a33d;   /* amber accent — the one "live" signal color  */
+  --signal-600: #cf8a26;   /* amber, pressed/hover state                  */
+  --grid-line: rgba(243, 239, 228, 0.06); /* faint blueprint grid lines   */
+
+  --status-online: #6fae7a;
+  --status-offline: #c2594f;
+
+  /* ---- Type ---- */
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Menlo, monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.5rem;
+  --text-3xl: 3.5rem;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  /* ---- Layout ---- */
+  --content-max: 72rem;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --border-hairline: 1px solid var(--ink-700);
+
+  /* ---- Motion ---- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 150ms;
+  --duration-base: 300ms;
+}

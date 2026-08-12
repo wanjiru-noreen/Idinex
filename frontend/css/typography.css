@@ -1,0 +1,41 @@
+/* ==========================================================================
+   typography.css
+   ========================================================================== */
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-lg); }
+
+p {
+  font-size: var(--text-base);
+  color: var(--paper-300);
+  max-width: 60ch;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal-500);
+}
+
+.text-muted {
+  color: var(--paper-500);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 640px) {
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.75rem; }
+}

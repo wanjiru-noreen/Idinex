@@ -1,0 +1,22 @@
+/* ==========================================================================
+   utilities.css
+   Single-purpose helpers. Use sparingly — prefer component classes first.
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+.hidden { display: none !important; }
+
+.text-center { text-align: center; }
+
+.mt-8 { margin-top: var(--space-8); }
+.mt-16 { margin-top: var(--space-16); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-8 { margin-bottom: var(--space-8); }

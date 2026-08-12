@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in — Idinex</title>
+  <meta name="description" content="Log in to Idinex to pick up where you left off with your logged ideas and collaborators." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/typography.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+  <div class="auth-page grid-blueprint">
+    <div class="auth-container">
+
+      <a href="../index.html" class="auth-brand" aria-label="Idinex Home">
+        <span class="auth-brand__mark">◆</span> IDINEX
+      </a>
+
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>Welcome back</h1>
+          <p>Log in to pick up where you left off with your logged ideas and collaborators.</p>
+        </div>
+
+        <div id="auth-alert" class="auth-alert hidden" role="alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+          <span id="auth-alert-message"></span>
+        </div>
+
+        <div class="auth-social">
+          <button type="button" class="btn--social" id="btn-github-auth">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+            </svg>
+            Continue with GitHub
+          </button>
+        </div>
+
+        <div class="auth-divider">
+          <span>or log in with email</span>
+        </div>
+
+        <form id="login-form" novalidate>
+          <div class="field" id="field-email">
+            <label for="email">Email Address <span class="required">*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@domain.com" required autocomplete="email" />
+            <span class="field__error-text">Please enter a valid email address.</span>
+          </div>
+
+          <div class="field" id="field-password">
+            <div class="field__label-row">
+              <label for="password">Password <span class="required">*</span></label>
+              <a href="forgot-password.html" class="text-mono" style="font-size: var(--text-xs); color: var(--signal-500); text-decoration: none;">Forgot?</a>
+            </div>
+            <div class="field__input-wrapper">
+              <input type="password" id="password" name="password" placeholder="Your password" required autocomplete="current-password" />
+              <button type="button" class="password-toggle-btn" id="toggle-password" aria-label="Show password">
+                <svg viewBox="0 0 24 24">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+              </button>
+            </div>
+            <span class="field__error-text">Enter your password.</span>
+          </div>
+
+          <div class="checkbox-field">
+            <input type="checkbox" id="remember" name="remember" checked />
+            <label for="remember">Keep me logged in on this device</label>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full" id="btn-submit">
+            <span class="btn-text">Log in</span>
+          </button>
+        </form>
+
+        <div class="auth-demo-prompt">
+          <span>Want to test quickly?</span>
+          <button type="button" class="btn-demo-fill" id="btn-fill-demo">Fill Demo Values</button>
+        </div>
+
+        <div class="auth-footer">
+          New to Idinex? <a href="register.html">Create an account</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { login, isAuthenticated } from "../js/auth/auth.js";
+
+    const params = new URLSearchParams(window.location.search);
+    const redirectTarget = params.get("redirect") || "dashboard.html";
+
+    // Auto redirect if already authenticated
+    if (isAuthenticated()) {
+      window.location.href = redirectTarget;
+    }
+
+    const form = document.getElementById("login-form");
+    const alertBox = document.getElementById("auth-alert");
+    const alertMsg = document.getElementById("auth-alert-message");
+    const passwordInput = document.getElementById("password");
+    const togglePasswordBtn = document.getElementById("toggle-password");
+    const fillDemoBtn = document.getElementById("btn-fill-demo");
+    const submitBtn = document.getElementById("btn-submit");
+
+    // Reflect why the visitor landed here, if relevant
+    if (params.get("logout") === "true") {
+      showAlert("You've been logged out.", "info");
+    } else if (params.get("redirect")) {
+      showAlert("Log in to continue.", "info");
+    }
+
+    // Toggle Password Visibility
+    togglePasswordBtn.addEventListener("click", () => {
+      const isPassword = passwordInput.type === "password";
+      passwordInput.type = isPassword ? "text" : "password";
+      togglePasswordBtn.setAttribute("aria-label", isPassword ? "Hide password" : "Show password");
+      togglePasswordBtn.innerHTML = isPassword
+        ? `<svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+        : `<svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+    });
+
+    // Fill Demo Data
+    fillDemoBtn.addEventListener("click", () => {
+      document.getElementById("email").value = "bramwel@idinex.dev";
+      document.getElementById("password").value = "Secret123!";
+      hideAlert();
+    });
+
+    // Social auth button feedback
+    document.getElementById("btn-github-auth").addEventListener("click", () => {
+      showAlert("GitHub OAuth is configured for production. Fill form below for instant access.", "info");
+    });
+
+    function showAlert(msg, type = "error") {
+      alertBox.className = `auth-alert auth-alert--${type}`;
+      alertMsg.textContent = msg;
+      alertBox.classList.remove("hidden");
+    }
+
+    function hideAlert() {
+      alertBox.classList.add("hidden");
+    }
+
+    function setError(fieldId, show) {
+      const el = document.getElementById(fieldId);
+      if (el) {
+        if (show) el.classList.add("field--error");
+        else el.classList.remove("field--error");
+      }
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const email = document.getElementById("email").value.trim();
+      const password = passwordInput.value;
+      const remember = document.getElementById("remember").checked;
+
+      let valid = true;
+      if (!email || !/\S+@\S+\.\S+/.test(email)) { setError("field-email", true); valid = false; } else { setError("field-email", false); }
+      if (!password) { setError("field-password", true); valid = false; } else { setError("field-password", false); }
+      if (!valid) return;
+
+      submitBtn.classList.add("btn--loading");
+
+      try {
+        await login(email, password, remember);
+        showAlert("Logged in. Redirecting...", "success");
+        setTimeout(() => {
+          window.location.href = redirectTarget;
+        }, 500);
+      } catch (err) {
+        submitBtn.classList.remove("btn--loading");
+        showAlert(err.message || "Couldn't log in. Check your email and password.");
+      }
+    });
+  </script>
+</body>
+</html>

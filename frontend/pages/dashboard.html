@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — Idinex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="../css/variables.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/typography.css" />
+  <link rel="stylesheet" href="../css/layout.css" />
+  <link rel="stylesheet" href="../css/buttons.css" />
+  <link rel="stylesheet" href="../css/forms.css" />
+  <link rel="stylesheet" href="../css/navbar.css" />
+  <link rel="stylesheet" href="../css/dashboard.css" />
+  <link rel="stylesheet" href="../css/utilities.css" />
+  <link rel="stylesheet" href="../css/responsive.css" />
+</head>
+<body>
+  <div data-include="../components/navbar.html"></div>
+
+  <main class="container dashboard-wrapper">
+    <div class="dashboard-layout">
+      <div data-include="../components/sidebar.html"></div>
+
+      <div class="dashboard-main">
+
+        <div class="dashboard-header">
+          <div>
+            <h1 class="dashboard-header__title" id="dashboard-greeting">Welcome back.</h1>
+            <p class="dashboard-header__subtitle">Here's what's happening with your ideas.</p>
+          </div>
+          <a href="create-idea.html" class="btn btn--primary">Log a new idea</a>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card__header">
+              <span>Logged ideas</span>
+              <svg class="stat-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+              </svg>
+            </div>
+            <span class="stat-card__value">0</span>
+            <span class="stat-card__footer">Nothing logged yet</span>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__header">
+              <span>Collaborators</span>
+              <svg class="stat-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <span class="stat-card__value">0</span>
+            <span class="stat-card__footer">No access requests yet</span>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-card__header">
+              <span>Messages</span>
+              <svg class="stat-card__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <span class="stat-card__value">0</span>
+            <span class="stat-card__footer">Inbox is quiet</span>
+          </div>
+        </div>
+
+        <div class="dashboard-grid-2">
+          <div class="dashboard-panel">
+            <div class="dashboard-panel__header">
+              <span class="dashboard-panel__title">Your logged ideas</span>
+              <a href="ideas.html" class="text-mono" style="font-size: var(--text-xs); color: var(--signal-500);">View all</a>
+            </div>
+
+            <div class="empty-state text-center" style="padding-block: var(--space-8);">
+              <p class="lead" style="margin-inline: auto; max-width: 32ch; color: var(--paper-300);">
+                You haven't logged an idea yet. Put the rough version down &mdash; it doesn't need to be ready.
+              </p>
+              <a href="create-idea.html" class="btn btn--primary mt-8">Log your first idea</a>
+            </div>
+          </div>
+
+          <div class="dashboard-panel">
+            <div class="dashboard-panel__header">
+              <span class="dashboard-panel__title">Recent activity</span>
+            </div>
+
+            <div class="activity-feed">
+              <div class="activity-item">
+                <span class="activity-dot"></span>
+                <div class="activity-content">
+                  <span data-user-name>You</span> joined Idinex.
+                  <div class="activity-time">just now</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { requireAuth, initAuthUI, getUser } from "../js/auth/auth.js";
+    import { initIncludes } from "../js/components/include-loader.js";
+
+    // Redirect to login before rendering anything if there's no session
+    if (requireAuth()) {
+      initIncludes().then(() => {
+        initAuthUI();
+
+        const user = getUser();
+        const greeting = document.getElementById("dashboard-greeting");
+        if (greeting) {
+          const firstName = (user && (user.name || user.username) || "").split(" ")[0];
+          greeting.textContent = firstName ? `Welcome back, ${firstName}.` : "Welcome back.";
+        }
+
+        // Mark the active sidebar link
+        const activeLink = document.querySelector('.sidebar__link[data-nav="dashboard"]');
+        if (activeLink) activeLink.classList.add("sidebar__link--active");
+      });
+    }
+  </script>
+</body>
+</html>

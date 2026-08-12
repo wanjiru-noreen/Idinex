@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IDINEX — where ideas get logged, indexed, and built</title>
+  <meta name="description" content="IDINEX is a workspace for logging, indexing, and building on ideas with other people." />
+
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/base.css" />
+  <link rel="stylesheet" href="css/typography.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/utilities.css" />
+  <link rel="stylesheet" href="css/buttons.css" />
+  <link rel="stylesheet" href="css/forms.css" />
+  <link rel="stylesheet" href="css/navbar.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+  <!-- Mount point #1: filled at runtime by include-loader.js with components/navbar.html -->
+  <div data-include="components/navbar.html"></div>
+
+  <main>
+    <!-- Development status banner -->
+    <div class="container" style="padding-top: var(--space-6);">
+      <div class="row status-banner"
+           style="justify-content: space-between; background-color: var(--ink-800); border: var(--border-hairline); border-radius: var(--radius-md); padding: var(--space-4) var(--space-6);">
+        <span class="text-mono" style="font-size: var(--text-sm); color: var(--paper-300);">
+          &#9679; Idinex is now in development
+        </span>
+        <span data-status-badge class="text-mono" style="font-size: var(--text-sm);" role="status" aria-live="polite">
+          Checking backend&hellip;
+        </span>
+      </div>
+    </div>
+
+    <!-- Hero -->
+    <section class="section grid-blueprint">
+      <div class="container">
+        <p class="eyebrow mb-4">idea ledger &mdash; est. 2026</p>
+        <h1 class="mb-8" style="max-width: 16ch;">
+          Log the idea. Index it. Build it with someone.
+        </h1>
+        <p class="mb-8" style="font-size: var(--text-lg);">
+          IDINEX is where a rough idea becomes a page in a shared ledger &mdash;
+          searchable, discussable, and open for someone else to help build.
+        </p>
+        <div class="row hero__actions">
+          <a href="/pages/register.html" class="btn btn--primary">Start an entry</a>
+          <a href="/pages/ideas.html" class="btn btn--ghost">Browse the ledger</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- What it does, in three concrete moves -->
+    <section class="section">
+      <div class="container">
+        <h2 class="mb-16">Three moves, not a workflow diagram</h2>
+        <div class="row" style="align-items: flex-start; flex-wrap: wrap; gap: var(--space-8);">
+          <div class="stack" style="flex: 1; min-width: 220px;">
+            <span class="eyebrow">write</span>
+            <h3>Log the idea</h3>
+            <p>Put it down before it's polished. A title, a problem, a sketch of the solution.</p>
+          </div>
+          <div class="stack" style="flex: 1; min-width: 220px;">
+            <span class="eyebrow">find</span>
+            <h3>Index it</h3>
+            <p>Tag it, categorize it, let it surface for the right person searching the ledger.</p>
+          </div>
+          <div class="stack" style="flex: 1; min-width: 220px;">
+            <span class="eyebrow">build</span>
+            <h3>Build together</h3>
+            <p>Comment, message, grant access. Turn a logged idea into shared work.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Mount point #2: filled at runtime by include-loader.js with components/footer.html -->
+  <div data-include="components/footer.html"></div>
+
+  <script type="module">
+    import { initIncludes } from "./js/components/include-loader.js";
+    import { initStatusBadges } from "./js/components/status-badge.js";
+    import { initAuthUI } from "./js/auth/auth.js";
+
+    initIncludes().then(() => {
+      initStatusBadges();
+      initAuthUI(); // swaps navbar links to Dashboard/Log out when a session exists
+    });
+  </script>
+</body>
+</html>
