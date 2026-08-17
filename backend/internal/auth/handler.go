@@ -9,19 +9,34 @@ import (
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		shared.WriteError(w, http.StatusMethodNotAllowed, "method not allowed")
+		shared.WriteError(
+			w,
+			http.StatusMethodNotAllowed,
+			"method_not_allowed",
+			"Method not allowed.",
+		)
 		return
 	}
 
 	var req RegisterRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-		shared.WriteError(w, http.StatusBadRequest, "invalid request body")
+		shared.WriteError(
+			w,
+			http.StatusBadRequest,
+			"invalid_request",
+			"Invalid request body.",
+		)
 		return
 	}
 
 	if err := ValidateRegisterRequest(req); err != nil {
-		shared.WriteError(w, http.StatusBadRequest, err.Error())
+		shared.WriteError(
+			w,
+			http.StatusBadRequest,
+			"invalid_request",
+			err.Error(),
+		)
 		return
 	}
 
